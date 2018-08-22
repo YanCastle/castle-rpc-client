@@ -31,9 +31,9 @@ export default class RPCClient extends EventEmitter {
     protected _id: number = 0;
     protected _promise: { [index: number]: { resolve: Function, reject: Function } } = {}
     //客户识别号
-    protected _address: string = '00000000'
+    protected _address: string = ''
     //服务器识别号
-    protected _server_address: string = '00000000'
+    protected _server_address: string = ''
     protected _services: { [index: string]: (data: any) => Promise<any> } = {}
     protected _push: { [index: string]: (data: any) => Promise<any> } = {}
     protected _waiting: RPC[] = [];
@@ -47,7 +47,7 @@ export default class RPCClient extends EventEmitter {
      * @param wsurl 
      * @param address 
      */
-    constructor(wsurl: string | string[], address: string = "", wsInstance: WebSocket | any = undefined) {
+    constructor(wsurl: string | string[] = '', address: string = "", wsInstance: WebSocket | any = undefined) {
         super()
         if (wsurl instanceof Array) {
             this._wsurl = wsurl[0]
