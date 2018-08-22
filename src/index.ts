@@ -6,7 +6,6 @@ export enum ClientEvent {
     LINK_ERROR = 'LINK_ERROR',
     LINK_OPEND = 'LINK_OPENED',
     LINK_CLOSED = 'LINK_CLOSED',
-    LINK_CONNECTED = 'LINK_CONNECTED',
     PUSH = 'PUSH',
     PUBLISH_RECEIVE = 'PUBLISH_RECEIVE',
     SERVICE_REQUEST = 'SERVICE_REQUEST',
@@ -82,32 +81,30 @@ export default class RPCClient extends EventEmitter {
      * 创建连接
      */
     protected createws() {
+        // if (!this._ws) {
         let s = this._wsInstance;
         this._ws = new s(this._wsurl)
         this._ws.binaryType = 'arraybuffer'
         this._ws.onerror = (evt: any) => {
             this._logined = false;
             this.emit(ClientEvent.LINK_ERROR, evt)
-            setTimeout(() => {
-                this.createws()
-            }, 5000)
         }
-        this._ws.onopen = () => {
-            this._times++;
-        }
-        this._ws.onclose = () => {
+        this._ws.onclose = (evt: any) => {
             this._logined = false;
+            this.emit(ClientEvent.LINK_CLOSED)
             setTimeout(() => {
                 this.createws()
             }, 5000)
         }
         this._ws.onopen = () => {
             this.onopen()
+            this._times++;
+            this.emit(ClientEvent.LINK_OPEND)
         }
         this._ws.onmessage = (evt: any) => {
-            let data = Buffer.from(evt.data)
-            this.message(data)
+            this.message(Buffer.from(evt.data))
         }
+        // }
     }
     protected async login() {
         if (this._ws.readyState == this._wsInstance.OPEN) {
