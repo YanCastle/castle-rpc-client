@@ -17,10 +17,11 @@ export interface RequestOption {
     Timeout?: number,
     Type?: RPCType
 }
-export enum WSClientError {
+export enum ClientError {
     Timeout = 'Timeout',
     MaxRequest = 'MaxRequest'
 }
+var max = 0;
 export default class RPCClient extends EventEmitter {
     protected _wsInstance: WebSocket | any = {};
     protected _ws: WebSocket | any;
@@ -39,6 +40,7 @@ export default class RPCClient extends EventEmitter {
     protected interval: any = 0;
     protected subscribes: { [index: string]: ((data: any, from: string, topic: string) => any)[] } = {}
     protected _logined: boolean = false;
+    public timeout = 600000
     get isLogin() { return this._logined }
     /**
      * 构造函数
@@ -196,7 +198,7 @@ export default class RPCClient extends EventEmitter {
         if (options.Timeout && options.Timeout > 0) {
             r.Timeout = Number(options.Timeout)
             setTimeout(() => {
-                this.reject(r.ID, new Error(WSClientError.Timeout))
+                this.reject(r.ID, new Error(ClientError.Timeout))
             }, options.Timeout)
         }
         if (options.NeedReply !== false) {
@@ -204,6 +206,9 @@ export default class RPCClient extends EventEmitter {
             return new Promise((resolve, reject) => {
                 this.send(r)
                 this._promise[r.ID] = { resolve, reject }
+                setTimeout(() => {
+                    this.reject(r.ID, ClientError.Timeout)
+                }, this.timeout)
             })
         }
         this.send(r)
@@ -213,11 +218,12 @@ export default class RPCClient extends EventEmitter {
      * 获得RequestID 
      */
     protected getRequestID() {
-        if (Object.keys(this._promise).length == 256) {
-            throw new Error(WSClientError.MaxRequest)
+        let len = Object.keys(this._promise).length;
+        if (len > 65535) {
+            throw new Error(ClientError.MaxRequest)
         }
         while (true) {
-            if (this._id > 255) { this._id = 0 }
+            if (this._id > 65535) { this._id = 0 }
             if (this._promise[this._id]) {
                 this._id++;
             } else {
