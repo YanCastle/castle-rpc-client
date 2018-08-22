@@ -76,9 +76,14 @@ export default class RPCClient extends EventEmitter {
                 // this._ws.ping
             }
         }, 240000)
-        this.createws();
+        if (this._wsurl)
+            this.createws();
     }
-
+    set server(server: string) {
+        this._wsurl = server;
+        this.createws()
+    }
+    get server() { return this._wsurl }
     /**
      * 创建连接
      */
