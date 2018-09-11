@@ -21,7 +21,6 @@ export enum ClientError {
     Timeout = 'Timeout',
     MaxRequest = 'MaxRequest'
 }
-var max = 0;
 export default class RPCClient extends EventEmitter {
     protected _wsInstance: WebSocket | any = {};
     protected _ws: WebSocket | any;
@@ -402,11 +401,16 @@ export default class RPCClient extends EventEmitter {
                 }
             })
         }
-        await this.request('', Data, { Type: RPCType.Sub, NeedReply: true })
         Data.forEach((t: string) => {
             if (!this.subscribes[t]) { this.subscribes[t] = [] }
             this.subscribes[t].push(cb)
         })
+        if (this._logined)
+            try {
+                await this.request('', Data, { Type: RPCType.Sub, NeedReply: true, Timeout: 10 })
+            } catch (error) {
+
+            }
         return true;
     }
     /**
@@ -424,10 +428,15 @@ export default class RPCClient extends EventEmitter {
                 }
             })
         }
-        await this.request('', Data, { Type: RPCType.UnSub, NeedReply: true })
         Data.forEach((t: string) => {
             if (this.subscribes[t]) { delete this.subscribes[t] }
         })
+        if (this._logined)
+            try {
+                await this.request('', Data, { Type: RPCType.UnSub, NeedReply: true, Timeout: 10 })
+            } catch (error) {
+
+            }
         return true;
     }
     /**
