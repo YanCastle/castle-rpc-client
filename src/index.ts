@@ -21,6 +21,10 @@ export enum ClientError {
     Timeout = 'Timeout',
     MaxRequest = 'MaxRequest'
 }
+export enum MessageType {
+    JSON,
+    Binary
+}
 export default class RPCClient extends EventEmitter {
     protected _wsInstance: WebSocket | any = {};
     protected _ws: WebSocket | any;
@@ -39,6 +43,7 @@ export default class RPCClient extends EventEmitter {
     protected interval: any = 0;
     protected subscribes: { [index: string]: ((data: any, from: string, topic: string) => any)[] } = {}
     protected _logined: boolean = false;
+    public MessageType: MessageType = MessageType.Binary
     public timeout = 600000
     get isLogin() { return this._logined }
     /**
@@ -108,7 +113,7 @@ export default class RPCClient extends EventEmitter {
             this.emit(ClientEvent.LINK_OPEND)
         }
         this._ws.onmessage = (evt: any) => {
-            this.message(Buffer.from(evt.data))
+            this.message(this.MessageType == MessageType.Binary ? Buffer.from(evt.data) : evt.data.toString())
         }
         // }
     }
@@ -241,7 +246,7 @@ export default class RPCClient extends EventEmitter {
      */
     protected send(rpc: RPC) {
         if (this._ws.readyState == this._wsInstance.OPEN) {
-            this._ws.send(rpc.encode())
+            this._ws.send(this.MessageType == MessageType.Binary ? rpc.encode() : JSON.stringify(rpc))
         }
         else {
             this._waiting.push(rpc)
