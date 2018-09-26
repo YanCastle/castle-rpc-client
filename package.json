@@ -1,12 +1,12 @@
 {
   "name": "castle-rpc-client",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/index.d.ts",
-    "dist/index.js",
+    "dist/**/*.d.ts",
+    "dist/**/*.js",
     "README.md"
   ],
   "scripts": {

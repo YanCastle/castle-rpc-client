@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "target": "es6",
+        "sourceMap": true,
+        "outDir": "../dist/amd",
+        // "outDir": "D:/Project/layimServer/node_modules/castle-koa/dist",
+        "declaration": true,
+        "experimentalDecorators": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "lib": [
+            "es2015",
+            "es2017",
+            "dom"
+        ]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
