@@ -9,11 +9,11 @@
         "experimentalDecorators": true,
         "removeComments": true,
         "preserveConstEnums": true,
-        "lib": [
-            "es2015",
-            "es2017",
-            "dom"
-        ]
+        // "lib": [
+        //     "es2015",
+        //     "es2017",
+        //     "dom"
+        // ]
     },
     "exclude": [
         "node_modules"

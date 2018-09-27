@@ -1,6 +1,7 @@
 import { RPC, RPCType, checkTopic } from 'castle-rpc';
 import { Buffer } from 'buffer'
 import { EventEmitter } from 'eventemitter3';
+
 export enum ClientEvent {
     LOGINED = 'LOGINED',
     LINK_ERROR = 'LINK_ERROR',
@@ -195,7 +196,7 @@ export default class RPCClient extends EventEmitter {
      * @param data 请求数据
      * @param options 请求参数
      */
-    async request(path: string, data: any = '', options: RequestOption = {}) {
+    async request(path: string, data: any = '', options: RequestOption | any = {}) {
         let r = new RPC()
         r.Path = path;
         r.Data = data;
@@ -452,4 +453,8 @@ export default class RPCClient extends EventEmitter {
     public async publish(topic: string, data: any) {
         return await this.request(topic, data, { Type: RPCType.Pub, NeedReply: true })
     }
+}
+declare let window: any
+if (window) {
+    window.RPCClient = RPCClient;
 }
