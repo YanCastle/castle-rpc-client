@@ -452,6 +452,10 @@ export default class RPCClient extends EventEmitter {
     }
 }
 declare let window: any
-if (window) {
-    window.RPCClient = RPCClient;
+try {
+    if (window) {
+        window.RPCClient = RPCClient;
+    }
+} catch (error) {
+
 }
