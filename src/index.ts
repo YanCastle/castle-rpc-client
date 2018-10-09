@@ -162,11 +162,8 @@ export default class RPCClient extends EventEmitter {
      * @param cb 
      */
     async regist(ServiceName: string, cb: (data: any) => Promise<any>) {
-        let rs = await this.request(ServiceName, true, { Type: RPCType.Regist, NeedReply: true })
-        if (rs)
-            this._services[ServiceName] = cb;
-        else
-            throw 'Error'
+        this._services[ServiceName] = cb;
+        await this.request(ServiceName, true, { Type: RPCType.Regist, NeedReply: true })
     }
     /**
      * 反向注册服务
