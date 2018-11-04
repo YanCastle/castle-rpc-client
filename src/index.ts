@@ -46,6 +46,9 @@ export default class RPCClient extends EventEmitter {
     protected _logined: boolean = false;
     public MessageType: MessageType = MessageType.Binary
     public timeout = 600000
+    get id() { return this._id; }
+    get ws() { return this._ws; }
+    get address() { return this._address; }
     get isLogin() { return this._logined }
     /**
      * 构造函数

@@ -1,6 +1,6 @@
 {
   "name": "castle-rpc-client",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/YanCastle/castle-rpc-client#readme",
   "dependencies": {
     "buffer": "^5.2.1",
-    "castle-rpc": "^1.0.3",
+    "castle-rpc": "^1.0.4",
     "eventemitter3": "^3.1.0"
   },
   "devDependencies": {
