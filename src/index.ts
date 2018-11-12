@@ -294,7 +294,7 @@ export default class RPCClient extends EventEmitter {
                 console.log(error)
             }
         }
-        if (rpc === undefined || rpc.To !== this._address) { return; }
+        if (rpc === undefined || (rpc.Type == RPCType.Proxy && rpc.To !== this._address)) { return; }
         this.emit(ClientEvent.MESSAGE, rpc)
         switch (rpc.Type) {
             case RPCType.Response:
