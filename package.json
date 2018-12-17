@@ -25,7 +25,7 @@
   "homepage": "https://github.com/YanCastle/castle-rpc-client#readme",
   "dependencies": {
     "buffer": "^5.2.1",
-    "castle-rpc": "^2.0.0",
+    "castle-rpc": "^2.0.1",
     "eventemitter3": "^3.1.0"
   },
   "devDependencies": {
